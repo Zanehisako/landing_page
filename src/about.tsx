@@ -1,45 +1,58 @@
-import { Canvas, useFrame, useThree } from '@react-three/fiber'
-import fragmentShader from "./shader/fragment.glsl"
-import vertexShader from "./shader/vertex.glsl"
-import { useRef } from "react"
-import { type ShaderMaterial } from 'three'
-import { FlipLink } from './FlipLink'
+import { Canvas, useFrame, useThree } from '@react-three/fiber';
+import fragmentShader from "./shader/fragment.glsl";
+import vertexShader from "./shader/vertex.glsl";
+import { useRef } from "react";
+import { type ShaderMaterial } from 'three';
+import { FlipLink } from './FlipLink';
 
 function FullscreenPlane() {
-  const { viewport } = useThree()
-  const { width, height } = viewport
-  const materialRef = useRef<ShaderMaterial>(undefined)
+  const { viewport, size } = useThree();
+  const materialRef = useRef<ShaderMaterial>(null);
 
-  // Animate uTime each frame
+  // This useFrame loop is now guaranteed to always have a live, valid material to work with.
   useFrame(({ clock }) => {
     if (materialRef.current) {
-      materialRef.current.uniforms.uTime.value = clock.getElapsedTime()
+      materialRef.current.uniforms.uTime.value = clock.getElapsedTime();
     }
-  })
+  });
 
+  // We no longer need a useEffect to handle the resolution uniform.
+  // The `key` prop will force the material to be recreated with the correct initial value.
 
   return (
-    <mesh scale={[width, height, 1]}>
+    <mesh scale={[viewport.width, viewport.height, 1]}>
       <planeGeometry args={[1, 1]} />
       <shaderMaterial
+        // --- THIS IS THE FIX ---
+        // By tying the key to the size, we tell React:
+        // "If the size changes, this is a NEW material. Destroy the old one and create this one."
+        // This prevents any stale state and guarantees the shader runs on a fresh instance.
+        key={`${size.width}-${size.height}`}
+
         ref={materialRef}
         vertexShader={vertexShader}
         fragmentShader={fragmentShader}
         uniforms={{
           uTime: { value: 0 },
-          uResolution: { value: [window.innerWidth, window.innerHeight] }
+          // This initial value will be correct every time the material is recreated.
+          uResolution: { value: [size.width, size.height] }
         }}
       />
     </mesh>
-  )
+  );
 }
 
 export function GradiantBackground() {
   return (
-    <Canvas className='w-full h-[dvw]' frameloop='always' aria-disabled resize={{ offsetSize: false, scroll: false }}>
+    <Canvas
+      className='w-full h-dvh'
+      frameloop='always'
+      // This prop is still essential to fix the shader stopping on mobile scroll.
+      resize={{ scroll: false }}
+    >
       <FullscreenPlane />
     </Canvas>
-  )
+  );
 }
 
 export default function About() {
