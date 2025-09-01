@@ -1,5 +1,5 @@
 import { motion } from "motion/react";
-export function FlipLink({ children, href }: { children: string, href: string }) {
+export function FlipLink({ className, children, href }: { className: string, children: string, href: string }) {
   const DURATION = 0.2;
   const STAGGER = 0.025;
   return (
@@ -9,7 +9,7 @@ export function FlipLink({ children, href }: { children: string, href: string })
       whileHover="hovered"
       href={href}
       style={{ lineHeight: 0.85 }}
-      className="relative block overflow-hidden whitespace-nowrap font-poppins underline-offset-1 tracking-tight font-bold text-9xl uppercase">
+      className={`${className} block overflow-hidden whitespace-nowrap font-poppins underline-offset-1 tracking-tight font-bold text-9xl uppercase`} >
       <div>
         {children.split("").map((l, i) =>
           <motion.span
@@ -42,6 +42,6 @@ export function FlipLink({ children, href }: { children: string, href: string })
             variants={{ initial: { y: "100%" }, hovered: { y: 0 } }}
             key={i}>{l}</motion.span>)}
       </div>
-    </motion.a>
+    </motion.a >
   )
 }

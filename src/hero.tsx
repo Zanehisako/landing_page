@@ -27,7 +27,7 @@ export default function Hero() {
   return (
     <div id="background" className="flex flex-col h-dvh w-full items-center justify-center  bg-red-200">
       <div id={href}>
-        <FlipLink href={href}>Hero ↗</FlipLink>
+        <FlipLink className="relative" href={href}>Hero ↗</FlipLink>
       </div>
     </div>
   );
