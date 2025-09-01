@@ -34,13 +34,18 @@ function FullscreenPlane() {
   )
 }
 
+export function GradiantBackground() {
+  return (
+    <Canvas frameloop='always' resize={{ scroll: false }}>
+      <FullscreenPlane />
+    </Canvas>
+  )
+}
+
 export default function About() {
   return (
-    <div id="canvas-container" className='flex relative h-dvh w-full items-center justify-center'>
+    <div id="canvas-container" className='flex relative h-dvh w-full items-center justify-center bg-lime-200'>
       <FlipLink className='z-1 absolute' href="/about">about↗</FlipLink>
-      <Canvas frameloop='always' resize={{ scroll: false }}>
-        <FullscreenPlane />
-      </Canvas>
     </div>
   );
 }

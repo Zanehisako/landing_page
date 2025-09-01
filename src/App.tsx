@@ -13,8 +13,8 @@ export default function Landing() {
     ScrollSmoother.create({
       wrapper: "#smooth-wrapper",
       content: "#appMain",
-      smooth: 1,        // Higher value = more smoothness
-      smoothTouch: 0.1, // Smooth scrolling on mobile (0.1 is subtle)
+      smooth: 1.5,
+      smoothTouch: 1, // Smooth scrolling on mobile (0.1 is subtle)
     })
   }, [])
 
