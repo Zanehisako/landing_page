@@ -16,8 +16,6 @@ export default function Hero() {
         end: "+=300",
         scrub: true,
         pin: true,
-        markers: true, // <--- add this while debugging
-
       },
       opacity: 0.0,
       y: 50
