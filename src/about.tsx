@@ -36,7 +36,7 @@ function FullscreenPlane() {
 
 export function GradiantBackground() {
   return (
-    <Canvas frameloop='always' resize={{ scroll: false }}>
+    <Canvas className='w-full h-[dvw]' frameloop='always' aria-disabled resize={{ offsetSize: false, scroll: false }}>
       <FullscreenPlane />
     </Canvas>
   )
@@ -45,7 +45,7 @@ export function GradiantBackground() {
 export default function About() {
   return (
     <div id="canvas-container" className='flex relative h-dvh w-full items-center justify-center bg-lime-200'>
-      <FlipLink className='z-1 absolute' href="/about">about↗</FlipLink>
+      <FlipLink className='z-1 absolute' href="about">about↗</FlipLink>
     </div>
   );
 }

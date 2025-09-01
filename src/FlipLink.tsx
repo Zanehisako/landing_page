@@ -1,7 +1,12 @@
 import { motion } from "motion/react";
+
+
 export function FlipLink({ className, children, href }: { className: string, children: string, href: string }) {
   const DURATION = 0.2;
   const STAGGER = 0.025;
+
+  console.log("href:", href)
+
   return (
     <motion.a
       id={href}
@@ -9,7 +14,7 @@ export function FlipLink({ className, children, href }: { className: string, chi
       whileHover="hovered"
       href={href}
       style={{ lineHeight: 0.85 }}
-      className={`${className} block overflow-hidden whitespace-nowrap font-poppins underline-offset-1 tracking-tight font-bold text-9xl uppercase`} >
+      className={`${className} block overflow-hidden whitespace-nowrap font-poppins underline-offset-1 tracking-tight font-bold  text-[clamp(3rem,10vw,12rem)] uppercase`} >
       <div>
         {children.split("").map((l, i) =>
           <motion.span
