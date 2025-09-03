@@ -15,6 +15,6 @@ void main() {
     }
     d += uTime * 0.5;
     vec3 col = vec3(cos(uv * vec2(d, a)) * 0.6 + 0.4, cos(a + d) * 0.5 + 0.5);
-    col = cos(col * cos(vec3(d, a, 2.5)) * 0.5 + 0.5);
+    col = cos(col * cos(vec3(d, a, 2.5)) * 0.6 + 0.6);
     gl_FragColor = vec4(col, 1.0);
 }

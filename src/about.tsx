@@ -4,8 +4,50 @@ import vertexShader from "./shader/vertex.glsl";
 import { useRef } from "react";
 import { type ShaderMaterial } from 'three';
 import { FlipLink } from './FlipLink';
+import { MeshTransmissionMaterial } from "@react-three/drei";
 
-function FullscreenPlane() {
+import { useControls } from 'leva';
+
+
+export function FullscreenPlaneNoShader() {
+  const { viewport } = useThree();
+  const materialRef = useRef<ShaderMaterial>(null);
+
+  // This useFrame loop is now guaranteed to always have a live, valid material to work with.
+  useFrame(({ clock }) => {
+    if (materialRef.current) {
+      materialRef.current.uniforms.uTime.value = clock.getElapsedTime();
+    }
+  });
+
+  // We no longer need a useEffect to handle the resolution uniform.
+  // The `key` prop will force the material to be recreated with the correct initial value.
+
+  const materialProps = useControls({
+
+    thickness: { value: 0.2, min: 0, max: 3, step: 0.05 },
+
+    roughness: { value: 0, min: 0, max: 1, step: 0.1 },
+
+    transmission: { value: 1, min: 0, max: 1, step: 0.1 },
+
+    ior: { value: 1.2, min: 0, max: 3, step: 0.1 },
+
+    chromaticAberration: { value: 0.02, min: 0, max: 1 },
+
+    backside: { value: true },
+
+  })
+
+  return (
+    <mesh position={[0, 0, 1]} scale={[viewport.width, viewport.height, 1]}>
+      <planeGeometry args={[1, 1]} />
+      <MeshTransmissionMaterial {...materialProps}></MeshTransmissionMaterial>
+    </mesh>
+  );
+}
+
+export function FullscreenPlane() {
   const { viewport, size } = useThree();
   const materialRef = useRef<ShaderMaterial>(null);
 

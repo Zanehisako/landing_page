@@ -1,56 +1,61 @@
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { ScrambleTextPlugin } from "gsap/ScrambleTextPlugin"
+import { SplitText } from "gsap/SplitText"
 import { useGSAP } from "@gsap/react";
-import { FlipLink } from "./FlipLink";
-import { GradiantBackground } from "./about";
 
-gsap.registerPlugin(ScrollTrigger, ScrambleTextPlugin, useGSAP);
+import { Canvas, useLoader } from '@react-three/fiber'
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js'
+import { Environment, Float } from "@react-three/drei";
+
+gsap.registerPlugin(ScrollTrigger, SplitText, useGSAP);
 
 export default function Hero() {
   const href = "hero";
+  const gltf = useLoader(GLTFLoader, '/invicta_watch/scene.gltf')
 
   useGSAP(() => {
-
-    // --- FIX 1: Add this ---
-    // This is the key to fixing the mobile scroll jank and the white bar.
-    // It should be run once, ideally in your main layout component, but here is fine.
-    ScrollTrigger.normalizeScroll(true);
-
-    gsap.to(`.hero-link`, {
-      duration: 1,
-      scrambleText: "Hero ↗"
-    })
-
-    const tl = gsap.timeline({
-      scrollTrigger: {
-        trigger: `#${href}`,
-        start: "top top",
-        end: "bottom top",
-        scrub: true,
-        pin: true,
-        invalidateOnRefresh: true,
-        // markers: true
+    let split;
+    SplitText.create("#text", {
+      type: "words,lines",
+      linesClass: "line",
+      autoSplit: true,
+      mask: "lines",
+      onSplit: (self) => {
+        split = gsap.from(self.lines, {
+          duration: 2,
+          yPercent: 100,
+          opacity: 0,
+          stagger: 0.1,
+          ease: "expo.out",
+        });
+        return split;
       }
     });
 
-    tl.to(".hero-link", { y: -100, ease: "power1.in" }, 0);
-
-    // It's good practice to return a cleanup function to revert the normalization
-    // when the component unmounts.
-    return () => {
-      if (ScrollTrigger.isTouch) { // Only affects touch devices
-        ScrollTrigger.normalizeScroll(false);
-      }
-    };
   }, []);
 
   return (
-    <div id={href} className="relative flex h-dvh w-full justify-center overflow-hidden">
+    <div id={href} className="relative flex h-dvh w-full justify-center overflow-hidden bg-black">
 
-      <FlipLink className='hero-link z-1 absolute self-center' href={href} children="Hero ↗" />
+      <Canvas
+        className='w-full h-dvh'
+        frameloop='always'
+      >
+        <lightProbe></lightProbe>
+        <Environment preset="city"></Environment>
+        <scene scale={[20, 20, 20]} rotation={[1, 0, 0]}>
+          <Float floatIntensity={0.4}>
+            <primitive object={gltf.scene} />
+          </Float>
+        </scene>
+      </Canvas>
+      <a className="absolute left-5 top-5 font-extrabold italic text-white z-1">Aurum</a>
+      {/* <NavBar className="absolute self-start top-2 right-10 z-1" /> */}
+      <a id="text" className="absolute text-1xl w-2xl text-white font-poppins font-bold uppercase self-center">
+        blending tradition and modern design.
+        Each watch is handmade with decades of expertise, aimed at collectors and connoisseurs.
+      </a>
 
-      <GradiantBackground />
     </div>
   );
 }
