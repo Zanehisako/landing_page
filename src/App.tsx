@@ -1,6 +1,6 @@
 import gsap from "gsap";
-import About from "./about";
-import Contact from "./contact";
+// import About from "./about";
+// import Contact from "./contact";
 import Hero from "./hero";
 import ScrollSmoother from "gsap/ScrollSmoother"
 import ScrollTrigger from "gsap/ScrollTrigger"
@@ -22,8 +22,8 @@ export default function Landing() {
     <div id="smooth-wrapper">
       <main id="appMain" >
         <Hero />
-        <About />
-        <Contact />
+        {/* <About /> */}
+        {/* <Contact /> */}
       </main>
     </div>
   );

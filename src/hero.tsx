@@ -32,7 +32,7 @@ export default function Hero() {
     if (!modelLoaded || !watchRef.current) return;
 
     const split = SplitText.create("#text", {
-      type: "words,lines",
+      type: "chars,words",
       linesClass: "line",
     });
     const splitClients = SplitText.create("#clientText", {
@@ -45,12 +45,20 @@ export default function Hero() {
       linesClass: "line",
     });
 
+    // Add the first animation to the timeline. It starts at time 0.
+    gsap.from(split.words, {
+      duration: 1.5,
+      yPercent: 200,
+      opacity: 0,
+      stagger: 0.05,
+      ease: "power2.inOut",
+    });
 
     // Best practice: Create the timeline first
     let tl = gsap.timeline({
       scrollTrigger: {
         trigger: "#hero",
-        start: "top top",
+        start: "top+=100 top",
         end: "bottom bottom",
         scrub: 3,
       },
@@ -61,23 +69,15 @@ export default function Hero() {
       }
     });
 
-    // Add the first animation to the timeline. It starts at time 0.
-    gsap.from(split.words, {
-      yPercent: 200,
-      opacity: 0,
-      stagger: 0.1,
-      ease: "expo.out",
-    });
 
     // --- GROUP 1: Second text reveal + First watch animation ---
     // We want these to happen together, starting after the first text reveal.
 
     // Add the second text animation. It starts right after the previous one finishes.
-    tl.from(splitClients.words, {
+    tl.from(splitClients.lines, {
       yPercent: 100,
       opacity: 0,
       stagger: 0.1,
-      ease: "expo.out",
     });
 
     // Now, animate the watch. The "<" tells it to start at the SAME TIME
@@ -86,7 +86,6 @@ export default function Hero() {
       x: -1.5,
       y: -0.5,
       z: 0,
-      ease: "expo.out",
     }, "<"); // <-- Position parameter: Start with previous animation
 
     // Animate the scale. The "<" tells it to also start at the same time.
@@ -94,7 +93,6 @@ export default function Hero() {
       x: 0.2,
       y: 0.2,
       z: 0.2,
-      ease: "expo.out",
     }, "<"); // <-- Position parameter: Start with previous animation
 
     // Animate the rotation. Again, "<" ensures it runs concurrently.
@@ -102,7 +100,6 @@ export default function Hero() {
       x: -Math.PI / 3,
       y: Math.PI / 3,
       z: 0,
-      ease: "expo.out",
     }, "<"); // <-- Position parameter: Start with previous animation
 
 
@@ -110,7 +107,7 @@ export default function Hero() {
     // We want these to happen together as well.
 
     // Add the third text animation. It starts after GROUP 1 is done.
-    tl.from(splitHistory.words, {
+    tl.from(splitHistory.lines, {
       yPercent: 100,
       opacity: 0,
       stagger: 0.1,
@@ -122,18 +119,13 @@ export default function Hero() {
       x: 1,
       y: -3.1,
       z: 0,
-      ease: "expo.out",
     }, "<"); // <-- Position parameter
 
     tl.to(watchRef.current.rotation, {
       x: -Math.PI / 3,
       y: -Math.PI / 3,
       z: -Math.PI / 3,
-      ease: "expo.out",
     }, "<"); // <-- Position parameter
-
-
-    ;
 
   }, [modelLoaded]); // Empty dependency array ensures this runs only once.
 
@@ -141,8 +133,8 @@ export default function Hero() {
     <div id={href} className="relative flex h-[300dvh] w-full justify-center overflow-hidden bg-black">
       {/* 3. This component will trigger our state change once the Watch model is loaded */}
       {modelLoaded && <>
-        <a id="text" className="absolute text-[clamp(1rem,4vw,4rem)] w-1xl text-white font-poppins font-bold uppercase top-20">
-          blending tradition and modern design
+        <a id="text" className="absolute text-[clamp(2rem,10vw,10rem)] italic w-1xl text-white font-poppins font-bold uppercase top-10">
+          Aurume
         </a>
         <a id="clientText" className="absolute text-[clamp(1rem,2vw,2rem)] w-80 right-0 text-white font-poppins font-bold uppercase self-center">
           Clients clients liek shfldsafj df a word again sd ensures fiber
