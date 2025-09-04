@@ -6,7 +6,7 @@ import { useGSAP } from "@gsap/react";
 import { Canvas } from '@react-three/fiber'
 import { Environment, Float } from "@react-three/drei";
 import { Suspense, useEffect, useRef, useState } from "react"; // We bring back useState
-import { Watch } from "./watch";
+import { Watch } from "./Watch";
 
 gsap.registerPlugin(ScrollTrigger, SplitText, useGSAP);
 
@@ -117,7 +117,7 @@ export default function Hero() {
     // at the same time as the splitHistory.words animation.
     tl.to(watchRef.current.position, {
       x: 1,
-      y: -3.1,
+      y: -3.3,
       z: 0,
     }, "<"); // <-- Position parameter
 
@@ -126,6 +126,7 @@ export default function Hero() {
       y: -Math.PI / 3,
       z: -Math.PI / 3,
     }, "<"); // <-- Position parameter
+
 
   }, [modelLoaded]); // Empty dependency array ensures this runs only once.
 
@@ -136,10 +137,10 @@ export default function Hero() {
         <a id="text" className="absolute text-[clamp(2rem,10vw,10rem)] italic w-1xl text-white font-poppins font-bold uppercase top-10">
           Aurume
         </a>
-        <a id="clientText" className="absolute text-[clamp(1rem,2vw,2rem)] w-80 right-0 text-white font-poppins font-bold uppercase self-center">
+        <a id="clientText" className="absolute text-[clamp(1rem,2vw,2rem)] w-64 right-0 text-white font-poppins font-bold uppercase self-center">
           Clients clients liek shfldsafj df a word again sd ensures fiber
         </a>
-        <a id="historyText" className="absolute text-[clamp(1rem,2vw,2rem)] w-80 left-10 text-white font-poppins font-bold uppercase bottom-50">
+        <a id="historyText" className="absolute text-[clamp(1rem,2vw,2rem)] w-64 left-10 text-white font-poppins font-bold uppercase self-end bottom-30">
           blending tradition and modern design
         </a>
       </>
@@ -151,7 +152,7 @@ export default function Hero() {
         <Environment preset="city" />
         <Suspense fallback={null}>
           <Float>
-            <Watch ref={watchRef} />
+            <Watch scale={[0.1, 0.1, 0.1]} position={[0, 2, 0]} ref={watchRef} />
           </Float>
           <ReadySignal onReady={() => setTimeout(() => {
             setModelLoaded(true)

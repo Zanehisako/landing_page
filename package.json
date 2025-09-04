@@ -15,6 +15,7 @@
     "@react-three/fiber": "^9.3.0",
     "@tailwindcss/vite": "^4.1.12",
     "@types/three": "^0.179.0",
+    "gltfjsx": "^6.5.3",
     "leva": "^0.10.0",
     "motion": "^12.23.12",
     "react": "^19.1.1",
