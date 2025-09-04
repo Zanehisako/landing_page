@@ -80,13 +80,13 @@ export function Watch(props: JSX.IntrinsicElements['group']) {
     })
 
     // Animate opacity to 1
-    gsap.to(materials.metal, { opacity: 1, duration: 3, ease: 'power2.out' })
-    gsap.to(materials.Glass, { opacity: 1, duration: 3, ease: 'power2.out', delay: 2 })
+    gsap.to(materials.metal, { opacity: 1, duration: 3, ease: 'power2.in' })
+    gsap.to(materials.Glass, { opacity: 1, duration: 3, ease: 'power2.in', delay: 1 })
   }, [materials])
   return (
-    <group {...props} dispose={null} position={[0, -1.5, 0]} scale={0.4}>
-      <group rotation={[-Math.PI / 2, 0, 0]} >
-        <group rotation={[Math.PI / 2, 0, 0]}>
+    <group {...props} dispose={null} position={[0, 2, 0]} scale={0.1}>
+      <group  >
+        <group>
           <mesh
             castShadow
             receiveShadow
